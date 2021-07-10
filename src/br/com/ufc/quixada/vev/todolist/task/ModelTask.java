@@ -3,7 +3,7 @@ package br.com.ufc.quixada.vev.todolist.task;
 import java.time.LocalDate;
 import java.util.UUID;
 
-class ModelTask {
+public class ModelTask {
 
 	private UUID id;
 	private String name;

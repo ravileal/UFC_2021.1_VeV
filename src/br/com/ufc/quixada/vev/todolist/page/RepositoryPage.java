@@ -3,7 +3,7 @@ package br.com.ufc.quixada.vev.todolist.page;
 import java.util.ArrayList;
 import java.util.UUID;
 
-class RepositoryPage {
+public class RepositoryPage {
 
 	private ArrayList<ModelPage> modelList;
 

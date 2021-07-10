@@ -2,7 +2,7 @@ package br.com.ufc.quixada.vev.todolist.page;
 
 import java.util.UUID;
 
-class ModelPage {
+public class ModelPage {
 
 	private UUID id;
 	private String name;

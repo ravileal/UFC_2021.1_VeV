@@ -3,7 +3,7 @@ package br.com.ufc.quixada.vev.todolist.task;
 import java.util.ArrayList;
 import java.util.UUID;
 
-class RepositoryTask {
+public class RepositoryTask {
 
 	private ArrayList<ModelTask> modelList;
 

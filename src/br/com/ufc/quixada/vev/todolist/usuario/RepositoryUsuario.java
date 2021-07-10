@@ -2,7 +2,7 @@ package br.com.ufc.quixada.vev.todolist.usuario;
 
 import java.util.ArrayList;
 
-class RepositoryUsuario {
+public class RepositoryUsuario {
 
 	private ArrayList<ModelUsuario> modelList;
 
