@@ -2,7 +2,7 @@ package br.com.ufc.quixada.vev.todolist.usuario;
 
 public class ControllerUsuario {
 
-	private static RepositoryUsuario rep;
+	private static RepositoryUsuario rep = new RepositoryUsuario();
 
 	/**
 	 * 

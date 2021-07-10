@@ -6,6 +6,8 @@ public class DTOUsuario {
 
 	private UUID id;
 	private String name;
+	private String username;
+	private UUID idAgenda;
 	
 	public UUID getId() {
 		return id;
@@ -21,6 +23,22 @@ public class DTOUsuario {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public UUID getIdAgenda() {
+		return idAgenda;
+	}
+
+	public void setIdAgenda(UUID idAgenda) {
+		this.idAgenda = idAgenda;
 	}
 
 	ModelUsuario toModel() {
