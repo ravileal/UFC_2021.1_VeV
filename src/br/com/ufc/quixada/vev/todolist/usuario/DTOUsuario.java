@@ -1,4 +1,4 @@
-package br.com.ufc.quixada.vev.todolist.Usuario;
+package br.com.ufc.quixada.vev.todolist.usuario;
 
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class DTOUsuario {
 		this.name = name;
 	}
 
-	br.com.ufc.quixada.vev.todolist.Usuario.ModelUsuario toModel() {
+	ModelUsuario toModel() {
 		// TODO - implement DTOUsuario.toModel
 		throw new UnsupportedOperationException();
 	}
@@ -32,7 +32,7 @@ public class DTOUsuario {
 	 * 
 	 * @param model
 	 */
-	void readModel(br.com.ufc.quixada.vev.todolist.Usuario.ModelUsuario model) {
+	void readModel(ModelUsuario model) {
 		// TODO - implement DTOUsuario.readModel
 		throw new UnsupportedOperationException();
 	}

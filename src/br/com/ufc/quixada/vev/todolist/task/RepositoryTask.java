@@ -1,4 +1,4 @@
-package br.com.ufc.quixada.vev.todolist.Task;
+package br.com.ufc.quixada.vev.todolist.task;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,7 +11,7 @@ class RepositoryTask {
 	 * 
 	 * @param id
 	 */
-	public ArrayList<br.com.ufc.quixada.vev.todolist.Task.ModelTask> findByPage(UUID id) {
+	public ArrayList<ModelTask> findByPage(UUID id) {
 		// TODO - implement RepositoryTask.findByPage
 		throw new UnsupportedOperationException();
 	}

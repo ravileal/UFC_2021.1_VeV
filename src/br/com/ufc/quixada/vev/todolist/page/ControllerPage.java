@@ -11,7 +11,7 @@ public class ControllerPage {
 	 * 
 	 * @param id
 	 */
-	public ArrayList<br.com.ufc.quixada.vev.todolist.page.DTOPage> findByAgenda(UUID id) {
+	public ArrayList<DTOPage> findByAgenda(UUID id) {
 		// TODO - implement ControrllerPage.findByAgenda
 		throw new UnsupportedOperationException();
 	}

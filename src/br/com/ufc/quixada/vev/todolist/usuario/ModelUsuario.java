@@ -1,4 +1,4 @@
-package br.com.ufc.quixada.vev.todolist.Usuario;
+package br.com.ufc.quixada.vev.todolist.usuario;
 
 import java.util.UUID;
 

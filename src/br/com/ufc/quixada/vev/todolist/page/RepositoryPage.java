@@ -11,7 +11,7 @@ class RepositoryPage {
 	 * 
 	 * @param id
 	 */
-	public ArrayList<br.com.ufc.quixada.vev.todolist.page.ModelPage> findByAgenda(UUID id) {
+	public ArrayList<ModelPage> findByAgenda(UUID id) {
 		// TODO - implement RepositoryPage.findByAgenda
 		throw new UnsupportedOperationException();
 	}

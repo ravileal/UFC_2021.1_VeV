@@ -1,4 +1,4 @@
-package br.com.ufc.quixada.vev.todolist.Task;
+package br.com.ufc.quixada.vev.todolist.task;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,7 +11,7 @@ public class ControrllerTask {
 	 * 
 	 * @param id
 	 */
-	public ArrayList<br.com.ufc.quixada.vev.todolist.Task.DTOTask> findByPage(UUID id) {
+	public ArrayList<DTOTask> findByPage(UUID id) {
 		// TODO - implement ControrllerTask.findByPage
 		throw new UnsupportedOperationException();
 	}
