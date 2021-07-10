@@ -3,10 +3,12 @@ package br.com.ufc.quixada.vev.todolist.app;
 import java.util.Scanner;
 
 public class Main {
-
+	private static String action = "";
+	
 	public static void main(String[] args) {
 		do{
-			switch (receiveActionMenu()) {
+			receiveDataMenu();
+			switch (action) {
 				case "acessar":
 					new Login().signIn();	
 					break;
@@ -21,17 +23,14 @@ public class Main {
 		} while (true);
 	}
 
-	private static String receiveActionMenu() {
-		String action = "";
+	private static void receiveDataMenu() {
 		do {
-			showMainMenu();
-			Scanner scanner = new Scanner(System.in);
-			action = filterInput(scanner);
-		} while (isAction(action));
-		return action;
+			showMenu();
+			receiveData();
+		} while (!isAction());
 	}
 	
-	private static void showMainMenu() {
+	private static void showMenu() {
 		String menu = "=== You TodoList ===\n" + 
 					 "-- Menu Principal --\n" + 
 					 " * Acessar\n"+
@@ -41,12 +40,12 @@ public class Main {
 		System.out.println(menu);
 	}
 
-	private static boolean isAction(String action) {
+	private static boolean isAction() {
 		return (action.equals("acessar") || action.equals("cadastrar") || action.equals("sair"));
 	}
 
-	private static String filterInput(Scanner scanner){
-		return scanner.nextLine().trim().toLowerCase();
+	private static void receiveData(){
+		action = new Scanner(System.in).nextLine().trim().toLowerCase();
 	}
 
 }
