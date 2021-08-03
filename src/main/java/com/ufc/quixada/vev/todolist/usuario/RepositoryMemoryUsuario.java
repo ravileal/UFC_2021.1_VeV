@@ -3,11 +3,11 @@ package com.ufc.quixada.vev.todolist.usuario;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class RepositoryUsuario implements IRepositoryUsuario{
+public class RepositoryMemoryUsuario implements IRepositoryUsuario{
 	
 	private ArrayList<ModelUsuario> list;
 	
-	public RepositoryUsuario() {
+	public RepositoryMemoryUsuario() {
 		list = new ArrayList<ModelUsuario>();
 	}
 	

@@ -3,11 +3,11 @@ package com.ufc.quixada.vev.todolist.task;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class RepositoryTask implements IRepositoryTask {
+public class RepositoryMemoryTask implements IRepositoryTask {
 
 	private ArrayList<ModelTask> list;
 	
-	public RepositoryTask() {
+	public RepositoryMemoryTask() {
 		list = new ArrayList<ModelTask>();
 	}
 

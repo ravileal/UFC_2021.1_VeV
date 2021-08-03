@@ -14,12 +14,12 @@ import org.junit.jupiter.api.Test;
 
 class RepositoryPageTest {
 
-	private RepositoryPage rep;
+	private RepositoryMemoryPage rep;
 	private ModelPage model;
 
 	@BeforeEach
 	public void setUp() {
-		rep = new RepositoryPage();
+		rep = new RepositoryMemoryPage();
 		
 		model = new ModelPage();
 		model.setId(UUID.randomUUID());

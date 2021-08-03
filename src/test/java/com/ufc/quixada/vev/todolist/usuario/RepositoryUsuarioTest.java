@@ -16,12 +16,12 @@ import org.junit.jupiter.api.Test;
 
 class RepositoryUsuarioTest {
 
-	private RepositoryUsuario rep;
+	private RepositoryMemoryUsuario rep;
 	private ModelUsuario model;
 
 	@BeforeEach
 	public void setUp() {
-		rep = new RepositoryUsuario();
+		rep = new RepositoryMemoryUsuario();
 		
 		model = new ModelUsuario();
 		model.setId(UUID.randomUUID());

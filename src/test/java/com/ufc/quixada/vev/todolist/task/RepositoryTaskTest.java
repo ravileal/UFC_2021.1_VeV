@@ -14,12 +14,12 @@ import org.junit.jupiter.api.Test;
 
 class RepositoryTaskTest {
 
-	private RepositoryTask rep;
+	private RepositoryMemoryTask rep;
 	private ModelTask model;
 
 	@BeforeEach
 	public void setUp() {
-		rep = new RepositoryTask();
+		rep = new RepositoryMemoryTask();
 		
 		model = new ModelTask();
 		model.setId(UUID.randomUUID());

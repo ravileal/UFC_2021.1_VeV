@@ -1,22 +1,15 @@
 package com.ufc.quixada.vev.todolist.page;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.UUID;
 
 
 public class ControllerPage {
 
-	private static IRepositoryPage rep = new RepositoryPage();
+	private IRepositoryPage rep;
 	
 	public ControllerPage(String environment){
-		if(rep != null ) return;
-		if(environment.equals("DEVELOPMENT"))
-			rep = new RepositoryPage();
-		else if (environment.equals("PRODUCTION"))
-			throw new UndeclaredThrowableException(null, "Ambiente de producao ainda nao configurado");
-		else 
-			throw new UndeclaredThrowableException(null, "Nenhum ambinte de execucao especificado");
+		rep = RepositoryFactoryPage.FactoryRepository(environment);
 	}
 	
 	public ArrayList<DTOPage> findByAgenda(UUID id) {

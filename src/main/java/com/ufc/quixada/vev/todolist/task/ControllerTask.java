@@ -1,21 +1,15 @@
 package com.ufc.quixada.vev.todolist.task;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
 public class ControllerTask {
 
-	private static IRepositoryTask rep = new RepositoryTask();
+	private IRepositoryTask rep;
 	
 	public ControllerTask(String environment){
-		if(rep != null ) return;
-		if(environment.equals("DEVELOPMENT"))
-			rep = new RepositoryTask();
-		else if (environment.equals("PRODUCTION"))
-			throw new UndeclaredThrowableException(null, "Ambiente de producao ainda nao configurado");
-		else 
-			throw new UndeclaredThrowableException(null, "Nenhum ambinte de execucao especificado");
+		rep = RepositoryFactoryTask.FactoryRepository(environment);
 	}
 	
 	public ArrayList<DTOTask> findByPage(UUID id) {

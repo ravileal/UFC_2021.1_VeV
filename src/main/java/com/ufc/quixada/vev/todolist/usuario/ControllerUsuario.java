@@ -1,19 +1,11 @@
 package com.ufc.quixada.vev.todolist.usuario;
 
-import java.lang.reflect.UndeclaredThrowableException;
-
 public class ControllerUsuario {
 
-	private static IRepositoryUsuario rep = null;
+	private IRepositoryUsuario rep;
 	
 	public ControllerUsuario(String environment){
-		if(rep != null ) return;
-		if(environment.equals("DEVELOPMENT"))
-			rep = new RepositoryUsuario();
-		else if (environment.equals("PRODUCTION")) 
-			throw new UndeclaredThrowableException(null, "Ambiente de producao ainda nao configurado");
-		else 
-			throw new UndeclaredThrowableException(null, "Nenhum ambinte de execucao especificado");
+		rep = RepositoryFactoryUsuario.FactoryRepository(environment);
 	}
 	
 	public DTOUsuario signIn(String username, String password) {
