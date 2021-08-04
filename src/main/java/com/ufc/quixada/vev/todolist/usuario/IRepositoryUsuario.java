@@ -4,11 +4,11 @@ import java.util.UUID;
 
 public interface IRepositoryUsuario {
 
-	ModelUsuario findByUsername(String username);
+	DTOUsuario findByUsername(String username);
 
-	boolean create(ModelUsuario usuario);
+	boolean create(DTOUsuario usuario);
 
-	boolean update(ModelUsuario usuario);
+	boolean update(DTOUsuario usuario);
 	
 	boolean delete(UUID id);
 	

@@ -12,31 +12,31 @@ public class RepositoryMemoryUsuario implements IRepositoryUsuario{
 	}
 	
 	@Override
-	public ModelUsuario findByUsername(String username) {
+	public DTOUsuario findByUsername(String username) {
 		if(username == null) 
 			throw new NullPointerException("username vazio");
 		for(ModelUsuario model: list) 
 			if(model.getUsername().equals(username)) 
-				return model;
+				return new DTOUsuario(model);
 		throw new IllegalArgumentException("usuario nao encontrado");
 	}
  
 	@Override
-	public boolean create(ModelUsuario usuario) {
+	public boolean create(DTOUsuario usuario) {
 		if(usuario == null) 
 			throw new NullPointerException("usuario vazio");
-		if(!list.add(usuario))
+		if(!list.add(usuario.toModel()))
 			throw new IllegalArgumentException("usuario invalido");
 		return true;
 	}
 
 	@Override
-	public boolean update(ModelUsuario usuario) {
+	public boolean update(DTOUsuario usuario) {
 		if(usuario == null) 
 			throw new NullPointerException("usuario vazia");
 		for(ModelUsuario model: list) 
 			if(model.getId().equals(usuario.getId())) {
-				model = usuario;
+				model = usuario.toModel();
 				return true;				
 			}
 		throw new IllegalArgumentException("usuario nao encontrado");

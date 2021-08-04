@@ -10,6 +10,16 @@ public class DTOUsuario {
 	private String password;
 	private UUID idAgenda;
 	
+	public DTOUsuario() {}
+	
+	public DTOUsuario(ModelUsuario model) {
+		this.id = model.getId();
+		this.name = model.getName();
+		this.username = model.getUsername();
+		this.password = model.getPassword();
+		this.idAgenda = model.getIdAgenda();
+	}
+	
 	public UUID getId() {
 		return id;
 	}
@@ -60,12 +70,13 @@ public class DTOUsuario {
 		return model;
 	}
 
-	void readModel(ModelUsuario model) {
+	DTOUsuario readModel(ModelUsuario model) {
 		this.id = model.getId();
 		this.name = model.getName();
 		this.username = model.getUsername();
 		this.password = model.getPassword();
 		this.idAgenda = model.getIdAgenda();
+		return this;
 	}
 	
 	public boolean equals(DTOUsuario dto) {
