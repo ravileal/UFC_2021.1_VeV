@@ -2,10 +2,14 @@ package com.ufc.quixada.vev.todolist.usuario;
 
 public class ControllerUsuario {
 	
-	IRepositoryUsuario rep;
+	private IRepositoryUsuario rep;
 	
 	public ControllerUsuario(String environment){
 		rep = RepositoryFactoryUsuario.getRepository(environment);
+	}
+	
+	public ControllerUsuario(IRepositoryUsuario rep){
+		this.rep = rep;
 	}
 	
 	public DTOUsuario signIn(String username, String password) {

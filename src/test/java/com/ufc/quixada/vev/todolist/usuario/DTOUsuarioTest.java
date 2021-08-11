@@ -3,8 +3,6 @@ package com.ufc.quixada.vev.todolist.usuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -26,12 +24,12 @@ class DTOUsuarioTest {
 	@BeforeEach
 	public void setUp() {
 		dto = new DTOUsuario();
-		model = mock(ModelUsuario.class);
-		when(model.getId()).thenReturn(id);
-		when(model.getName()).thenReturn(name);
-		when(model.getUsername()).thenReturn(username);
-		when(model.getPassword()).thenReturn(password);
-		when(model.getIdAgenda()).thenReturn(agendaId);
+		model = new ModelUsuario();
+		model.setId(id);
+		model.setName(name);
+		model.setUsername(username);
+		model.setPassword(password);
+		model.setIdAgenda(agendaId);
 	}
 	 
 	@AfterEach

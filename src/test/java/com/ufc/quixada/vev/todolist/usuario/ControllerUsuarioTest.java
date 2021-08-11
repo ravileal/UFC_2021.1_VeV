@@ -3,6 +3,8 @@ package com.ufc.quixada.vev.todolist.usuario;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -15,10 +17,10 @@ class ControllerUsuarioTest {
 
 	private static ControllerUsuario ctrl;
 	private static DTOUsuario dto;
-
+	private static IRepositoryUsuario repositoryUsuario;
+	
 	@BeforeEach
 	public void setUp() {
-		ctrl = new ControllerUsuario("DEVELOPMENT");
 		
 		dto = new DTOUsuario();
 		dto.setId(UUID.randomUUID());
@@ -26,12 +28,21 @@ class ControllerUsuarioTest {
 		dto.setUsername("New Username");
 		dto.setPassword("password1223");
 		dto.setIdAgenda(UUID.randomUUID());
+		
+		repositoryUsuario = mock(IRepositoryUsuario.class);
+		when(repositoryUsuario.findByUsername(dto.getUsername())).thenReturn(dto);
+		when(repositoryUsuario.create(dto)).thenReturn(true);
+		when(repositoryUsuario.update(dto)).thenReturn(true);
+		when(repositoryUsuario.delete(dto.getId())).thenReturn(true);
+		
+		ctrl = new ControllerUsuario(repositoryUsuario);
 	}
 	 
 
 	@AfterEach
 	public void tearDown() {
 		ctrl = null;
+		repositoryUsuario = null;
 	}
 
 	/* *
@@ -41,13 +52,14 @@ class ControllerUsuarioTest {
 
 	@Test
 	public void shouldCreateNewUsuario() {
+		when(repositoryUsuario.findByUsername(dto.getUsername())).thenThrow(IllegalArgumentException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullId() {
 		dto.setId(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -58,25 +70,25 @@ class ControllerUsuarioTest {
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullName() {
 		dto.setName(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullUsername() {
 		dto.setUsername(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullPassword() {
 		dto.setPassword(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullIdAgenda() {
 		dto.setIdAgenda(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -92,7 +104,7 @@ class ControllerUsuarioTest {
 	@Test
 	public void shouldDoSignIn() {
 		dto.setUsername("the new username");
-		ctrl.create(dto);
+		when(repositoryUsuario.findByUsername(dto.getUsername())).thenReturn(dto);
 		assertTrue(dto.equals(ctrl.signIn("the new username", "password1223")));
 	}
 
@@ -108,7 +120,7 @@ class ControllerUsuarioTest {
 	
 	@Test
 	public void shouldThrowWhenTryDoSignInWithUnknownUsername() {
-		assertThrows(IllegalArgumentException.class, () -> ctrl.signIn("This is a unknown username", "password1223"));
+		assertThrows(NullPointerException.class, () -> ctrl.signIn("This is a unknown username", "password1223"));
 	}
 	
 	@Test
