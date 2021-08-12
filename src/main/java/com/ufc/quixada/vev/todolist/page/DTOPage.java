@@ -2,12 +2,19 @@ package com.ufc.quixada.vev.todolist.page;
 
 import java.util.UUID;
 
-
 public class DTOPage {
 
 	private UUID id;
 	private String name;
 	private UUID idAgenda;
+	
+	public DTOPage() {}
+	
+	public DTOPage(ModelPage model) {
+		this.id = model.getId();
+		this.name = model.getName();
+		this.idAgenda = model.getIdAgenda();
+	}
 	
 	public UUID getId() {
 		return id;

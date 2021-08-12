@@ -8,6 +8,13 @@ public class DTOTask {
 	private String name;
 	private UUID idPage;
 
+	public DTOTask() {}
+	
+	public DTOTask(ModelTask model) {
+		this.id = model.getId();
+		this.name = model.getName();
+		this.idPage = model.getIdPage();
+	}
 	
 	public UUID getId() {
 		return id;

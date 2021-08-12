@@ -3,6 +3,16 @@ package com.ufc.quixada.vev.todolist.task;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import com.ufc.quixada.vev.todolist.task.DTOTask;
+import com.ufc.quixada.vev.todolist.task.ModelTask;
+
 public class RepositoryTask implements IRepositoryTask {
 
 	private ArrayList<DTOTask> list;
@@ -10,65 +20,118 @@ public class RepositoryTask implements IRepositoryTask {
 	public RepositoryTask() {
 		list = new ArrayList<DTOTask>();
 	}
+	
+	private DTOTask findById(UUID id){
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		ModelTask model = entityManager.find(ModelTask.class, id);
 
-	@Override
-	public ArrayList<DTOTask> findByPage(UUID id) {
-		ArrayList<DTOTask> list = new ArrayList<>();
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		
+		return new DTOTask(model);
+	}
+	
+	public ArrayList<DTOTask> findByPage(UUID id){
 		if(id == null) 
-			throw new NullPointerException("id de pagina esta vazio");
+			throw new NullPointerException("username vazio");
 		
-		for(DTOTask model: this.list) 
-			if(model.getIdPage().equals(id)) 
-				list.add(model);
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
 		
-		if(list.isEmpty())
-			throw new IllegalArgumentException("pagina sem tasks");
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ModelTask> crit = criteriaBuilder.createQuery(ModelTask.class);
+        Root<ModelTask> root = crit.from(ModelTask.class);
+        crit.where(criteriaBuilder.equal(root.get("idPage"), id))
+            .distinct(true);
+        ModelTask model = entityManager.createQuery(crit).getSingleResult();
+        
+		if(model == null) throw new IllegalArgumentException("nenhuma task encontrada");
 		
-		return list;
+		return new DTOTask(model);
+	}
+	
+	public DTOTask findByName(String name){
+		if(name == null) 
+			throw new NullPointerException("username vazio");
+		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<ModelTask> crit = criteriaBuilder.createQuery(ModelTask.class);
+        Root<ModelTask> root = crit.from(ModelTask.class);
+        crit.where(criteriaBuilder.equal(root.get("name"), name))
+            .distinct(true);
+        ModelTask model = entityManager.createQuery(crit).getSingleResult();
+        
+		if(model == null) throw new IllegalArgumentException("task nao encontrada");
+		
+		return new DTOTask(model);
 	}
  
 	@Override
-	public DTOTask findByName(String name) {
-		if(name == null) 
-			throw new NullPointerException("nome vazio");
-		for(DTOTask model: list) 
-			if(model.getName().equals(name)) 
-				return model;
-		throw new IllegalArgumentException("task nao encontrada");
-	}
-
-	@Override
 	public boolean create(DTOTask task) {
 		if(task == null) 
-			throw new NullPointerException("task vazia");
-		if(!list.add(task))
-			throw new IllegalArgumentException("task invalida");
+			throw new NullPointerException("task vazio");
+		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		
+		entityManager.persist(task.toModel());
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
 		return true;
 	}
 
 	@Override
 	public boolean update(DTOTask task) {
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
 		if(task == null) 
 			throw new NullPointerException("task vazia");
-		for(DTOTask model: list) 
-			if(model.getId().equals(task.getId())) {
-				model = task;
-				return true;				
-			}
-		throw new IllegalArgumentException("task nao encontrada");
+		
+		if(this.findById(task.getId()) == null) 
+			throw new IllegalArgumentException("task nao encontrada");
+		
+		entityManager.merge(task.toModel());			
+		
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		return true;
 	}
 
 	@Override
 	public boolean delete(UUID id) {
 		if(id == null) 
 			throw new NullPointerException("id vazio");
-		for(DTOTask model: list) 
-			if(model.getId().equals(id)) {
-				list.remove(model);
-				return true;				
-			}
-		throw new IllegalArgumentException("task nao encontrada");
+		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		
+		DTOTask task = this.findById(id);
+		if(task == null) throw new IllegalArgumentException("task nao encontrada");
+		
+		ModelTask model = task.toModel();
+		entityManager.remove(entityManager.contains(model) ? model : entityManager.merge(model));			
+		
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		
+		return true;
 	}
+
 	
 }

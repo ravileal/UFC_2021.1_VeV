@@ -18,19 +18,21 @@ public class App {
 		
 		RepositoryTask rep = new RepositoryTask();
 		
-//		DTOTask dto = rep.findByUsername("usuário 12345");
+		DTOTask dto = rep.findByName("task 3");
 //		
 //		rep.delete(dto.getId());
 		
-		DTOTask dto = new DTOTask();
+//		DTOTask dto = new DTOTask();
 		
-		dto.setId(UUID.randomUUID());
-		dto.setName("task 1");
-		dto.setIdPage(UUID.randomUUID());
+//		dto.setId(UUID.randomUUID());
+//		dto.setName("task 3");
+//		dto.setIdPage(UUID.randomUUID());
 		
-		rep.create(dto);
+//		rep.create(dto);
 		
 //		rep.update(dto);
+		
+		rep.delete(dto.getId());
 
 //		DTOTask task2 = new DTOTask();
 //		task2.setName("task 2");
