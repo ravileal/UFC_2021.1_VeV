@@ -3,26 +3,42 @@ package com.ufc.quixada.vev.todolist.page;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 class ControllerPageTest {
 
 	private static ControllerPage ctrl;
 	private static DTOPage dto;
 
+	private static IRepositoryPage repository;
 	@BeforeEach
 	public void setUp() {
-		ctrl = new ControllerPage("DEVELOPMENT");
 		
 		dto = new DTOPage();
 		dto.setId(UUID.randomUUID());
 		dto.setName("New Name");
 		dto.setIdAgenda(UUID.randomUUID());
+		
+		ArrayList<DTOPage> list = new ArrayList<>();
+		list.add(dto);
+		
+		repository = mock(IRepositoryPage.class);
+		when(repository.findByAgenda(dto.getId())).thenReturn(list);
+		when(repository.findByName(dto.getName())).thenReturn(dto);
+		when(repository.create(dto)).thenReturn(true);
+		when(repository.update(dto)).thenReturn(true);
+		when(repository.delete(dto.getId())).thenReturn(true);
+		
+		ctrl = new ControllerPage(repository);
 	}
 
 	@AfterEach
@@ -37,13 +53,14 @@ class ControllerPageTest {
 
 	@Test
 	public void shouldCreateNewPage() {
+		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewPageWithNullId() {
 		dto.setId(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -54,13 +71,13 @@ class ControllerPageTest {
 	@Test
 	public void shouldThrowWhenTryCreateNewPageWithNullName() {
 		dto.setName(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewPageWithNullIdAgenda() {
 		dto.setIdAgenda(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -75,9 +92,7 @@ class ControllerPageTest {
 
 	@Test
 	public void shouldDoFindByPageName() {
-		dto.setName("the new name");
-		ctrl.create(dto);
-		assertTrue(dto.equals(ctrl.findByName("the new name")));
+		assertTrue(dto.equals(ctrl.findByName(dto.getName())));
 	}
 
 	@Test
@@ -87,7 +102,7 @@ class ControllerPageTest {
 		
 	@Test
 	public void shouldThrowWhenTryDoFindByPageWithUnknownName() {
-		assertThrows(IllegalArgumentException.class, () -> ctrl.findByName("This is a unknown name"));
+		assertThrows(NullPointerException.class, () -> ctrl.findByName("This is a unknown name"));
 	}
 	
 	/* *
@@ -97,22 +112,21 @@ class ControllerPageTest {
 
 	@Test
 	public void shouldDoFindByAgendaId() {
-		UUID id = UUID.randomUUID();
-		dto.setName("outher new name");
-		dto.setIdAgenda(id);
-		ctrl.create(dto);
-		for (DTOPage task: ctrl.findByAgenda(id))
+		for (DTOPage task: ctrl.findByAgenda(dto.getId()))
 			assertTrue(dto.equals(task));
 	}
 
 	@Test
 	public void shouldThrowWhenTryDoFindByPageWithNullAgendaId() {
-		assertThrows(NullPointerException.class, () -> ctrl.findByAgenda(null));
+		when(repository.findByAgenda(null)).thenThrow(IllegalArgumentException.class);
+		assertThrows(IllegalArgumentException.class, () -> ctrl.findByAgenda(null));
 	}
 		
 	@Test
 	public void shouldThrowWhenTryDoFindByPageWithUnknownAgendaId() {
-		assertThrows(IllegalArgumentException.class, () -> ctrl.findByAgenda(UUID.randomUUID()));
+		UUID id = UUID.randomUUID();
+		when(repository.findByAgenda(id)).thenThrow(IllegalArgumentException.class);
+		assertThrows(IllegalArgumentException.class, () -> ctrl.findByAgenda(id));
 	}
 	
 }

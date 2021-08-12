@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
+
 public class ControllerTask {
 
 	private IRepositoryTask rep;
@@ -12,35 +13,33 @@ public class ControllerTask {
 		rep = RepositoryFactoryTask.FactoryRepository(environment);
 	}
 	
+	public ControllerTask(IRepositoryTask rep){
+		this.rep = rep;
+	}
+	
 	public ArrayList<DTOTask> findByPage(UUID id) {
 		ArrayList<DTOTask> list = new ArrayList<>();
 		
-		for(ModelTask model: rep.findByPage(id)) {
-			DTOTask dto = new DTOTask();
-			dto.readModel(model);
+		for(DTOTask dto: rep.findByPage(id)) 
 			list.add(dto);
-		}
 			
 		return list;
 	} 
 	
 	public DTOTask findByName(String name) {
-		ModelTask model = rep.findByName(name);
+		DTOTask dto = rep.findByName(name);
 		
-		if(model == null) 
+		if(dto == null) 
 			throw new NullPointerException("task nao encontrada");
 		
-		DTOTask task = new DTOTask();
-		task.readModel(model);
-		return task;
+		return dto;
 	}
 
 	public DTOTask create(DTOTask dto) {
-		ModelTask model = dto.toModel();
 		try {			
 			rep.findByName(dto.getName());
 		}catch (IllegalArgumentException e) {
-			return rep.create(model)? dto: null;
+			return rep.create(dto)? dto: null;
 		}
 		throw new IllegalArgumentException("Tentando criar task com nome ja existente");
 	}

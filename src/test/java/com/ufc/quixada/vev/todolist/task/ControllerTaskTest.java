@@ -3,7 +3,10 @@ package com.ufc.quixada.vev.todolist.task;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
@@ -15,21 +18,34 @@ class ControllerTaskTest {
 
 	private static ControllerTask ctrl;
 	private static DTOTask dto;
+	private static IRepositoryTask repository;
 
 	@BeforeEach
 	public void setUp() {
-		ctrl = new ControllerTask("DEVELOPMENT");
 		
 		dto = new DTOTask();
 		dto.setId(UUID.randomUUID());
 		dto.setName("New Name");
 		dto.setIdPage(UUID.randomUUID());
+		
+		ArrayList<DTOTask> list = new ArrayList<>();
+		list.add(dto);
+		
+		repository = mock(IRepositoryTask.class);
+		when(repository.findByPage(dto.getId())).thenReturn(list);
+		when(repository.findByName(dto.getName())).thenReturn(dto);
+		when(repository.create(dto)).thenReturn(true);
+		when(repository.update(dto)).thenReturn(true);
+		when(repository.delete(dto.getId())).thenReturn(true);
+		
+		ctrl = new ControllerTask(repository);
 	}
 	 
 
 	@AfterEach
 	public void tearDown() {
 		ctrl = null;
+		repository = null;
 	}
 
 	/* *
@@ -39,13 +55,14 @@ class ControllerTaskTest {
 
 	@Test
 	public void shouldCreateNewTask() {
+		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewTaskWithNullId() {
 		dto.setId(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -56,13 +73,13 @@ class ControllerTaskTest {
 	@Test
 	public void shouldThrowWhenTryCreateNewTaskWithNullName() {
 		dto.setName(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewTaskWithNullIdPage() {
 		dto.setIdPage(null);
-		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
 	}
 	
 	@Test
@@ -78,7 +95,7 @@ class ControllerTaskTest {
 	@Test
 	public void shouldDoFindByTaskName() {
 		dto.setName("the new name");
-		ctrl.create(dto);
+		when(repository.findByName(dto.getName())).thenReturn(dto);
 		assertTrue(dto.equals(ctrl.findByName("the new name")));
 	}
 
@@ -89,7 +106,7 @@ class ControllerTaskTest {
 		
 	@Test
 	public void shouldThrowWhenTryDoFindByTaskWithUnknownName() {
-		assertThrows(IllegalArgumentException.class, () -> ctrl.findByName("This is a unknown name"));
+		assertThrows(NullPointerException.class, () -> ctrl.findByName("This is a unknown name"));
 	}
 	
 	/* *
@@ -102,6 +119,7 @@ class ControllerTaskTest {
 		UUID id = UUID.randomUUID();
 		dto.setName("outher new name");
 		dto.setIdPage(id);
+		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
 		ctrl.create(dto);
 		for (DTOTask task: ctrl.findByPage(id))
 			assertTrue(dto.equals(task));
@@ -109,12 +127,15 @@ class ControllerTaskTest {
 
 	@Test
 	public void shouldThrowWhenTryDoFindByTaskWithNullPageId() {
+		when(repository.findByPage(null)).thenThrow(NullPointerException.class);
 		assertThrows(NullPointerException.class, () -> ctrl.findByPage(null));
 	}
 		
 	@Test
 	public void shouldThrowWhenTryDoFindByTaskWithUnknownPageId() {
-		assertThrows(IllegalArgumentException.class, () -> ctrl.findByPage(UUID.randomUUID()));
+		UUID id = UUID.randomUUID();
+		when(repository.findByPage(id)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.findByPage(id));
 	}
 	
 }

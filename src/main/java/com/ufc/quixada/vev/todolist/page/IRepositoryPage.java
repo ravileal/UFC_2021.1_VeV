@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public interface IRepositoryPage {
 
-	ArrayList<ModelPage> findByAgenda(UUID id);
+	ArrayList<DTOPage> findByAgenda(UUID id);
 	
-	ModelPage findByName(String name);
+	DTOPage findByName(String name);
 
-	boolean create(ModelPage page);
+	boolean create(DTOPage page);
 
-	boolean update(ModelPage page);
+	boolean update(DTOPage page);
 
 	boolean delete(UUID id);
 

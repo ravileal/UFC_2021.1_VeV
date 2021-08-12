@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class RepositoryMemoryPage implements IRepositoryPage{
+public class RepositoryPage implements IRepositoryPage{
 	
 	private ArrayList<DTOPage> list;
 	
-	public RepositoryMemoryPage() {
+	public RepositoryPage() {
 		list = new ArrayList<DTOPage>();
 	}
 

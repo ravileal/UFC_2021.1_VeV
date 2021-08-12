@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public interface IRepositoryTask {
 
-	ArrayList<ModelTask> findByPage(UUID id);
+	ArrayList<DTOTask> findByPage(UUID id);
 	
-	ModelTask findByName(String name);
+	DTOTask findByName(String name);
 
-	boolean create(ModelTask task);
+	boolean create(DTOTask task);
 
-	boolean update(ModelTask task);
+	boolean update(DTOTask task);
 
 	boolean delete(UUID id);
 

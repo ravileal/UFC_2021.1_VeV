@@ -4,17 +4,18 @@ import java.lang.reflect.UndeclaredThrowableException;
 
 public class RepositoryFactoryTask {
 	
-	private static IRepositoryTask repositoryMemoryTask;
+	private static IRepositoryTask repositoryTask;
 	
 	private RepositoryFactoryTask() {}
 	
 	public static IRepositoryTask FactoryRepository(String environment){
 		switch(environment) {
-			case "DEVELOPMENT":
-				repositoryMemoryTask = repositoryMemoryTask == null ? new RepositoryMemoryTask() : repositoryMemoryTask;
-				return repositoryMemoryTask;
+			case "TEST":
+				repositoryTask = repositoryTask == null ? new RepositoryMemoryTask() : repositoryTask;
+				return repositoryTask;
 			case "PRODUCTION":
-				throw new UndeclaredThrowableException(null, "Ambiente de producao ainda nao configurado");
+				repositoryTask = repositoryTask == null ? new RepositoryTask() : repositoryTask;
+				return repositoryTask;
 			default:
 				throw new UndeclaredThrowableException(null, "Nenhum ambinte de execucao especificado");
 		}

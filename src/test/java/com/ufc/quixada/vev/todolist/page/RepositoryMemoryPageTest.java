@@ -12,24 +12,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-class RepositoryPageTest {
+class RepositoryMemoryPageTest {
 
 	private RepositoryMemoryPage rep;
-	private ModelPage model;
+	private DTOPage dto;
 
 	@BeforeEach
 	public void setUp() {
 		rep = new RepositoryMemoryPage();
 		
-		model = new ModelPage();
-		model.setId(UUID.randomUUID());
-		model.setName("new name");
-		model.setIdAgenda(UUID.randomUUID());
+		dto = new DTOPage();
+		dto.setId(UUID.randomUUID());
+		dto.setName("new name");
+		dto.setIdAgenda(UUID.randomUUID());
 	}
 	
 	@AfterEach
 	public void tearDown() {
-		model = null;
+		dto = null;
 		rep = null;
 	}
 	
@@ -40,7 +40,7 @@ class RepositoryPageTest {
 
 	@Test
 	public void shouldCreateNewPage() {
-		assertTrue(rep.create(model));
+		assertTrue(rep.create(dto));
 	}
 	
 	@Test
@@ -55,8 +55,8 @@ class RepositoryPageTest {
 
 	@Test
 	public void shouldFindPage() {
-		rep.create(model);
-		assertEquals(model, rep.findByName(model.getName()));
+		rep.create(dto);
+		assertEquals(dto, rep.findByName(dto.getName()));
 	}
 	
 	@Test
@@ -76,27 +76,27 @@ class RepositoryPageTest {
 
 	@Test
 	public void shouldUpdatePage() {
-		rep.create(model);
+		rep.create(dto);
 		
-		model.setName("name updated");
-		assertTrue(rep.update(model));
+		dto.setName("name updated");
+		assertTrue(rep.update(dto));
 		
-		ModelPage usr = rep.findByName(model.getName());
-		assertEquals(usr.getName(), model.getName());
+		DTOPage usr = rep.findByName(dto.getName());
+		assertEquals(usr.getName(), dto.getName());
 	}
 	
 	@Test
 	public void shouldThrowWhenTryUpdateWithNullPage() {
-		rep.create(model);
+		rep.create(dto);
 		assertThrows(NullPointerException.class, () -> rep.update(null));
 	}
 	
 	@Test
 	public void shouldThrowWhenTryUpdateWithUnknownPage() {
-		rep.create(model);
-		model = new ModelPage(); 
-		model.setId(UUID.randomUUID());
-		assertThrows(IllegalArgumentException.class, () -> rep.update(model));
+		rep.create(dto);
+		dto = new DTOPage(); 
+		dto.setId(UUID.randomUUID());
+		assertThrows(IllegalArgumentException.class, () -> rep.update(dto));
 	}
 	
 	/* *
@@ -106,11 +106,11 @@ class RepositoryPageTest {
 
 	@Test
 	public void shouldDeletePage() {
-		rep.create(model);
+		rep.create(dto);
 		
-		assertTrue(rep.delete(model.getId()));
+		assertTrue(rep.delete(dto.getId()));
 		
-		assertThrows(IllegalArgumentException.class, () -> rep.findByName(model.getName()));
+		assertThrows(IllegalArgumentException.class, () -> rep.findByName(dto.getName()));
 	}
 	
 	@Test
@@ -120,10 +120,10 @@ class RepositoryPageTest {
 	
 	@Test
 	public void shouldThrowWhenTryDeleteWithUnknownPage() {
-		rep.create(model);
-		model = new ModelPage();
-		model.setId(UUID.randomUUID());
-		assertThrows(IllegalArgumentException.class, () -> rep.delete(model.getId()));
+		rep.create(dto);
+		dto = new DTOPage();
+		dto.setId(UUID.randomUUID());
+		assertThrows(IllegalArgumentException.class, () -> rep.delete(dto.getId()));
 	}
 	
 }

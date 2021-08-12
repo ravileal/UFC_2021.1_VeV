@@ -17,7 +17,7 @@ class ControllerUsuarioTest {
 
 	private static ControllerUsuario ctrl;
 	private static DTOUsuario dto;
-	private static IRepositoryUsuario repositoryUsuario;
+	private static IRepositoryUsuario repository;
 	
 	@BeforeEach
 	public void setUp() {
@@ -29,20 +29,20 @@ class ControllerUsuarioTest {
 		dto.setPassword("password1223");
 		dto.setIdAgenda(UUID.randomUUID());
 		
-		repositoryUsuario = mock(IRepositoryUsuario.class);
-		when(repositoryUsuario.findByUsername(dto.getUsername())).thenReturn(dto);
-		when(repositoryUsuario.create(dto)).thenReturn(true);
-		when(repositoryUsuario.update(dto)).thenReturn(true);
-		when(repositoryUsuario.delete(dto.getId())).thenReturn(true);
+		repository = mock(IRepositoryUsuario.class);
+		when(repository.findByUsername(dto.getUsername())).thenReturn(dto);
+		when(repository.create(dto)).thenReturn(true);
+		when(repository.update(dto)).thenReturn(true);
+		when(repository.delete(dto.getId())).thenReturn(true);
 		
-		ctrl = new ControllerUsuario(repositoryUsuario);
+		ctrl = new ControllerUsuario(repository);
 	}
 	 
 
 	@AfterEach
 	public void tearDown() {
 		ctrl = null;
-		repositoryUsuario = null;
+		repository = null;
 	}
 
 	/* *
@@ -52,7 +52,7 @@ class ControllerUsuarioTest {
 
 	@Test
 	public void shouldCreateNewUsuario() {
-		when(repositoryUsuario.findByUsername(dto.getUsername())).thenThrow(IllegalArgumentException.class);
+		when(repository.findByUsername(dto.getUsername())).thenThrow(IllegalArgumentException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	
@@ -104,7 +104,7 @@ class ControllerUsuarioTest {
 	@Test
 	public void shouldDoSignIn() {
 		dto.setUsername("the new username");
-		when(repositoryUsuario.findByUsername(dto.getUsername())).thenReturn(dto);
+		when(repository.findByUsername(dto.getUsername())).thenReturn(dto);
 		assertTrue(dto.equals(ctrl.signIn("the new username", "password1223")));
 	}
 

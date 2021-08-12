@@ -5,20 +5,20 @@ import java.util.UUID;
 
 public class RepositoryMemoryTask implements IRepositoryTask {
 
-	private ArrayList<ModelTask> list;
+	private ArrayList<DTOTask> list;
 	
 	public RepositoryMemoryTask() {
-		list = new ArrayList<ModelTask>();
+		list = new ArrayList<DTOTask>();
 	}
 
 	@Override
-	public ArrayList<ModelTask> findByPage(UUID id) {
-		ArrayList<ModelTask> list = new ArrayList<>();
+	public ArrayList<DTOTask> findByPage(UUID id) {
+		ArrayList<DTOTask> list = new ArrayList<>();
 		
 		if(id == null) 
 			throw new NullPointerException("id de pagina esta vazio");
 		
-		for(ModelTask model: this.list) 
+		for(DTOTask model: this.list) 
 			if(model.getIdPage().equals(id)) 
 				list.add(model);
 		
@@ -29,17 +29,17 @@ public class RepositoryMemoryTask implements IRepositoryTask {
 	}
  
 	@Override
-	public ModelTask findByName(String name) {
+	public DTOTask findByName(String name) {
 		if(name == null) 
 			throw new NullPointerException("nome vazio");
-		for(ModelTask model: list) 
+		for(DTOTask model: list) 
 			if(model.getName().equals(name)) 
 				return model;
 		throw new IllegalArgumentException("task nao encontrada");
 	}
 
 	@Override
-	public boolean create(ModelTask task) {
+	public boolean create(DTOTask task) {
 		if(task == null) 
 			throw new NullPointerException("task vazia");
 		if(!list.add(task))
@@ -48,10 +48,10 @@ public class RepositoryMemoryTask implements IRepositoryTask {
 	}
 
 	@Override
-	public boolean update(ModelTask task) {
+	public boolean update(DTOTask task) {
 		if(task == null) 
 			throw new NullPointerException("task vazia");
-		for(ModelTask model: list) 
+		for(DTOTask model: list) 
 			if(model.getId().equals(task.getId())) {
 				model = task;
 				return true;				
@@ -63,7 +63,7 @@ public class RepositoryMemoryTask implements IRepositoryTask {
 	public boolean delete(UUID id) {
 		if(id == null) 
 			throw new NullPointerException("id vazio");
-		for(ModelTask model: list) 
+		for(DTOTask model: list) 
 			if(model.getId().equals(id)) {
 				list.remove(model);
 				return true;				

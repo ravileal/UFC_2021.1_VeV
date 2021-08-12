@@ -3,8 +3,6 @@ package com.ufc.quixada.vev.todolist.task;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
@@ -24,10 +22,10 @@ class DTOTaskTest {
 	@BeforeEach
 	public void setUp() {
 		dto = new DTOTask();
-		model = mock(ModelTask.class);
-		when(model.getId()).thenReturn(id);
-		when(model.getName()).thenReturn(name);
-		when(model.getIdPage()).thenReturn(pageId);
+		model = new ModelTask();
+		model.setId(id);
+		model.setName(name);
+		model.setIdPage(pageId);
 	}
 	 
 	@AfterEach
