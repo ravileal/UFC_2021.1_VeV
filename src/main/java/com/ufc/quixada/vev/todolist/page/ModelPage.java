@@ -18,7 +18,7 @@ public class ModelPage {
 	@Column(name = "name", nullable = true)
 	private String name;
 	
-	@Column(name = "idAgenda", unique = true, nullable = false)
+	@Column(name = "idAgenda", unique = false, nullable = false)
 	private UUID idAgenda;
 	
 	public UUID getId() {

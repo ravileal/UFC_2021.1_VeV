@@ -1,5 +1,6 @@
 package com.ufc.quixada.vev.todolist.task;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -18,29 +19,40 @@ public class App {
 		
 		RepositoryTask rep = new RepositoryTask();
 		
-		DTOTask dto = rep.findByName("task 3");
+		UUID idPage = UUID.fromString("0d8e92a8-d779-4e32-aa74-073f4aab1dd1");
+		
+		ArrayList<DTOTask> list = rep.findByPage(idPage);
+		
+		for (DTOTask dtoTask : list) 
+			System.out.println(dtoTask.getName());
+		
+		
+//		DTOTask dto = rep.findByName("task 3");
 //		
 //		rep.delete(dto.getId());
 		
-//		DTOTask dto = new DTOTask();
+//		DTOTask task = new DTOTask();
 		
-//		dto.setId(UUID.randomUUID());
-//		dto.setName("task 3");
-//		dto.setIdPage(UUID.randomUUID());
 		
-//		rep.create(dto);
+//		task.setId(UUID.randomUUID());
+//		task.setName("task 1");
+//		task.setIdPage(idPage);
+		
+//		rep.create(task);
 		
 //		rep.update(dto);
 		
-		rep.delete(dto.getId());
+//		rep.delete(dto.getId());
 
 //		DTOTask task2 = new DTOTask();
+//		task2.setId(UUID.randomUUID());
 //		task2.setName("task 2");
-//		task2.setIdPage(UUID.randomUUID());
+//		task2.setIdPage(idPage);
 //
 //		DTOTask task3 = new DTOTask();
+//		task3.setId(UUID.randomUUID());
 //		task3.setName("task 3");
-//		task3.setIdPage(UUID.randomUUID());
+//		task3.setIdPage(idPage);
 //		
 //		rep.create(task);
 //		rep.create(task2);

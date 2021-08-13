@@ -1,6 +1,7 @@
 package com.ufc.quixada.vev.todolist.task;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -36,7 +37,7 @@ public class RepositoryTask implements IRepositoryTask {
 	
 	public ArrayList<DTOTask> findByPage(UUID id){
 		if(id == null) 
-			throw new NullPointerException("username vazio");
+			throw new NullPointerException("id vazio");
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -47,11 +48,16 @@ public class RepositoryTask implements IRepositoryTask {
         Root<ModelTask> root = crit.from(ModelTask.class);
         crit.where(criteriaBuilder.equal(root.get("idPage"), id))
             .distinct(true);
-        ModelTask model = entityManager.createQuery(crit).getSingleResult();
+        List<ModelTask> modelList = entityManager.createQuery(crit).getResultList();
         
-		if(model == null) throw new IllegalArgumentException("nenhuma task encontrada");
+		if(modelList == null) throw new IllegalArgumentException("nenhuma task encontrada");
 		
-		return new DTOTask(model);
+		ArrayList<DTOTask> dtoList = new ArrayList<>();
+		
+		for(ModelTask model: modelList)
+			dtoList.add(new DTOTask(model));
+		
+		return dtoList;
 	}
 	
 	public DTOTask findByName(String name){

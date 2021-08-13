@@ -1,6 +1,7 @@
 package com.ufc.quixada.vev.todolist.page;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,9 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import com.ufc.quixada.vev.todolist.task.DTOTask;
+import com.ufc.quixada.vev.todolist.task.ModelTask;
 
 
 public class RepositoryPage implements IRepositoryPage{
@@ -34,7 +38,7 @@ public class RepositoryPage implements IRepositoryPage{
 	
 	public ArrayList<DTOPage> findByAgenda(UUID id){
 		if(id == null) 
-			throw new NullPointerException("username vazio");
+			throw new NullPointerException("id vazio");
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -45,11 +49,16 @@ public class RepositoryPage implements IRepositoryPage{
         Root<ModelPage> root = crit.from(ModelPage.class);
         crit.where(criteriaBuilder.equal(root.get("idAgenda"), id))
             .distinct(true);
-        ModelPage model = entityManager.createQuery(crit).getSingleResult();
+        List<ModelPage> modelList = entityManager.createQuery(crit).getResultList();
         
-		if(model == null) throw new IllegalArgumentException("nenhuma page encontrada");
+		if(modelList == null) throw new IllegalArgumentException("nenhuma pagina encontrada");
 		
-		return new DTOPage(model);
+		ArrayList<DTOPage> dtoList = new ArrayList<>();
+		
+		for(ModelPage model: modelList)
+			dtoList.add(new DTOPage(model));
+		
+		return dtoList;
 	}
 	
 	public DTOPage findByName(String name){
@@ -67,7 +76,7 @@ public class RepositoryPage implements IRepositoryPage{
             .distinct(true);
         ModelPage model = entityManager.createQuery(crit).getSingleResult();
         
-		if(model == null) throw new IllegalArgumentException("page nao encontrada");
+		if(model == null) throw new IllegalArgumentException("pagina nao encontrada");
 		
 		return new DTOPage(model);
 	}
@@ -75,7 +84,7 @@ public class RepositoryPage implements IRepositoryPage{
 	@Override
 	public boolean create(DTOPage page) {
 		if(page == null) 
-			throw new NullPointerException("page vazio");
+			throw new NullPointerException("pagina vazio");
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -97,10 +106,10 @@ public class RepositoryPage implements IRepositoryPage{
 		entityManager.getTransaction().begin();
 		
 		if(page == null) 
-			throw new NullPointerException("page vazia");
+			throw new NullPointerException("pagina vazia");
 		
 		if(this.findById(page.getId()) == null) 
-			throw new IllegalArgumentException("page nao encontrada");
+			throw new IllegalArgumentException("pagina nao encontrada");
 		
 		entityManager.merge(page.toModel());			
 		
@@ -120,7 +129,7 @@ public class RepositoryPage implements IRepositoryPage{
 		entityManager.getTransaction().begin();
 		
 		DTOPage page = this.findById(id);
-		if(page == null) throw new IllegalArgumentException("page nao encontrada");
+		if(page == null) throw new IllegalArgumentException("pagina nao encontrada");
 		
 		ModelPage model = page.toModel();
 		entityManager.remove(entityManager.contains(model) ? model : entityManager.merge(model));			

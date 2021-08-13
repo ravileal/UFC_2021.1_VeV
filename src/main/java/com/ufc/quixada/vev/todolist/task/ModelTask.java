@@ -18,7 +18,7 @@ public class ModelTask {
 	@Column(name = "name", nullable = true)
 	private String name;
 	
-	@Column(name = "idPage", unique = true, nullable = false)
+	@Column(name = "idPage", unique = false, nullable = false)
 	private UUID idPage;
 	
 	public UUID getId() {
