@@ -2,8 +2,6 @@ package com.ufc.quixada.vev.todolist.page;
 
 import java.lang.reflect.UndeclaredThrowableException;
 
-import com.ufc.quixada.vev.todolist.task.RepositoryTask;
-
 public class RepositoryFactoryPage {
 	
 	private static IRepositoryPage repository;

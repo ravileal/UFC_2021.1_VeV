@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +57,7 @@ class ControllerTaskTest {
 
 	@Test
 	public void shouldCreateNewTask() {
-		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
+		when(repository.findByName(dto.getName())).thenThrow(NoResultException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	
@@ -119,7 +121,7 @@ class ControllerTaskTest {
 		UUID id = UUID.randomUUID();
 		dto.setName("outher new name");
 		dto.setIdPage(id);
-		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
+		when(repository.findByName(dto.getName())).thenThrow(NoResultException.class);
 		ctrl.create(dto);
 		for (DTOTask task: ctrl.findByPage(id))
 			assertTrue(dto.equals(task));

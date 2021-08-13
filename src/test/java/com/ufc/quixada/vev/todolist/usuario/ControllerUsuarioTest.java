@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +54,7 @@ class ControllerUsuarioTest {
 
 	@Test
 	public void shouldCreateNewUsuario() {
-		when(repository.findByUsername(dto.getUsername())).thenThrow(IllegalArgumentException.class);
+		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	

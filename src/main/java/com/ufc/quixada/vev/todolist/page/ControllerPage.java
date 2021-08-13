@@ -5,8 +5,6 @@ import java.util.UUID;
 
 import javax.persistence.NoResultException;
 
-import com.ufc.quixada.vev.todolist.task.IRepositoryTask;
-
 
 public class ControllerPage {
 
@@ -41,11 +39,10 @@ public class ControllerPage {
 	public DTOPage create(DTOPage dto) {
 		try {			
 			rep.findByName(dto.getName());
-		} catch (IllegalArgumentException e) {
-			return rep.create(dto)? dto: null;
 		} catch (NoResultException e) {
 			return rep.create(dto)? dto: null;
 		}
+		
 		throw new IllegalArgumentException("Tentando criar pagina com nome ja existente");
 	}
 

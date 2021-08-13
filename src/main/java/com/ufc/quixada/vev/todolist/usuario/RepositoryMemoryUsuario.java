@@ -3,6 +3,8 @@ package com.ufc.quixada.vev.todolist.usuario;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 public class RepositoryMemoryUsuario implements IRepositoryUsuario{
 	
 	private ArrayList<ModelUsuario> list;
@@ -18,7 +20,7 @@ public class RepositoryMemoryUsuario implements IRepositoryUsuario{
 		for(ModelUsuario model: list) 
 			if(model.getUsername().equals(username)) 
 				return new DTOUsuario(model);
-		throw new IllegalArgumentException("usuario nao encontrado");
+		throw new NoResultException("usuario nao encontrado");
 	}
  
 	@Override

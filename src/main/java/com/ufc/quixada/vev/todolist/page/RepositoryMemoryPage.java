@@ -3,6 +3,8 @@ package com.ufc.quixada.vev.todolist.page;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 
 public class RepositoryMemoryPage implements IRepositoryPage{
 	
@@ -36,7 +38,7 @@ public class RepositoryMemoryPage implements IRepositoryPage{
 		for(DTOPage dto: list) 
 			if(dto.getName().equals(name)) 
 				return dto;
-		throw new IllegalArgumentException("pagina nao encontrada");
+		throw new NoResultException("pagina nao encontrada");
 	}
 
 	@Override

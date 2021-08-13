@@ -11,17 +11,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import com.ufc.quixada.vev.todolist.task.DTOTask;
-import com.ufc.quixada.vev.todolist.task.ModelTask;
-
 public class RepositoryTask implements IRepositoryTask {
 
-	private ArrayList<DTOTask> list;
-	
-	public RepositoryTask() {
-		list = new ArrayList<DTOTask>();
-	}
-	
+
 	private DTOTask findById(UUID id){
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -35,6 +27,7 @@ public class RepositoryTask implements IRepositoryTask {
 		return new DTOTask(model);
 	}
 	
+	@Override
 	public ArrayList<DTOTask> findByPage(UUID id){
 		if(id == null) 
 			throw new NullPointerException("id vazio");
@@ -60,6 +53,7 @@ public class RepositoryTask implements IRepositoryTask {
 		return dtoList;
 	}
 	
+	@Override
 	public DTOTask findByName(String name){
 		if(name == null) 
 			throw new NullPointerException("username vazio");

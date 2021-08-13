@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +70,7 @@ class RepositoryMemoryUsuarioTest {
 	
 	@Test
 	public void shouldThrowWhenTryFindWithUnknownUsuario() {
-		assertThrows(IllegalArgumentException.class, () -> rep.findByUsername("unknown username"));
+		assertThrows(NoResultException.class, () -> rep.findByUsername("unknown username"));
 	}
 	
 	/* *
@@ -112,7 +114,7 @@ class RepositoryMemoryUsuarioTest {
 		
 		assertTrue(rep.delete(dto.getId()));
 		
-		assertThrows(IllegalArgumentException.class, () -> rep.findByUsername(dto.getUsername()));
+		assertThrows(NoResultException.class, () -> rep.findByUsername(dto.getUsername()));
 	}
 	
 	@Test

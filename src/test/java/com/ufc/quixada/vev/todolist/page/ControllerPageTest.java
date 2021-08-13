@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +55,7 @@ class ControllerPageTest {
 
 	@Test
 	public void shouldCreateNewPage() {
-		when(repository.findByName(dto.getName())).thenThrow(IllegalArgumentException.class);
+		when(repository.findByName(dto.getName())).thenThrow(NoResultException.class);
 		assertEquals(dto, ctrl.create(dto));
 	}
 	

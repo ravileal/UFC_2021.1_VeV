@@ -3,6 +3,8 @@ package com.ufc.quixada.vev.todolist.task;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 public class RepositoryMemoryTask implements IRepositoryTask {
 
 	private ArrayList<DTOTask> list;
@@ -35,7 +37,7 @@ public class RepositoryMemoryTask implements IRepositoryTask {
 		for(DTOTask model: list) 
 			if(model.getName().equals(name)) 
 				return model;
-		throw new IllegalArgumentException("task nao encontrada");
+		throw new NoResultException("task nao encontrada");
 	}
 
 	@Override

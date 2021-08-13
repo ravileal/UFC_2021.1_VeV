@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +68,7 @@ class RepositoryMemoryPageTest {
 	
 	@Test
 	public void shouldThrowWhenTryFindWithUnknownPage() {
-		assertThrows(IllegalArgumentException.class, () -> rep.findByName("unknown name"));
+		assertThrows(NoResultException.class, () -> rep.findByName("unknown name"));
 	}
 	
 	/* *
@@ -110,7 +112,7 @@ class RepositoryMemoryPageTest {
 		
 		assertTrue(rep.delete(dto.getId()));
 		
-		assertThrows(IllegalArgumentException.class, () -> rep.findByName(dto.getName()));
+		assertThrows(NoResultException.class, () -> rep.findByName(dto.getName()));
 	}
 	
 	@Test
