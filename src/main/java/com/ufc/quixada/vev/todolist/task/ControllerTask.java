@@ -3,6 +3,8 @@ package com.ufc.quixada.vev.todolist.task;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 
 public class ControllerTask {
 
@@ -37,7 +39,9 @@ public class ControllerTask {
 	public DTOTask create(DTOTask dto) {
 		try {			
 			rep.findByName(dto.getName());
-		}catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
+			return rep.create(dto)? dto: null;
+		} catch (NoResultException e) {
 			return rep.create(dto)? dto: null;
 		}
 		throw new IllegalArgumentException("Tentando criar task com nome ja existente");

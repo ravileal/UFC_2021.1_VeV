@@ -1,5 +1,7 @@
 package com.ufc.quixada.vev.todolist.usuario;
 
+import javax.persistence.NoResultException;
+
 public class ControllerUsuario {
 	
 	private IRepositoryUsuario rep;
@@ -26,7 +28,9 @@ public class ControllerUsuario {
 	public DTOUsuario create(DTOUsuario dto) {
 		try {			
 			rep.findByUsername(dto.getUsername());
-		}catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
+			return rep.create(dto)? dto: null;
+		} catch (NoResultException e) {
 			return rep.create(dto)? dto: null;
 		}
 		throw new IllegalArgumentException("Tentando criar usuario com username ja existente");

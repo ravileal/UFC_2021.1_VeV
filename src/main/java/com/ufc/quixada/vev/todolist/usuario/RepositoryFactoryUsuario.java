@@ -4,18 +4,18 @@ import java.lang.reflect.UndeclaredThrowableException;
 
 public class RepositoryFactoryUsuario {
 	
-	private static IRepositoryUsuario usuarioRepository;
+	private static IRepositoryUsuario repository;
 	
 	private RepositoryFactoryUsuario() {}
 	
 	public static IRepositoryUsuario getRepository(String environment){
 		switch(environment) {
 			case "TEST":
-				usuarioRepository = usuarioRepository == null ? new RepositoryMemoryUsuario() : usuarioRepository;
-				return usuarioRepository;
+				repository = repository == null ? new RepositoryMemoryUsuario() : repository;
+				return repository;
 			case "DEVELOPMENT":
-				usuarioRepository = usuarioRepository == null ? new RepositoryUsuario() : usuarioRepository;
-				return usuarioRepository;
+				repository = repository == null ? new RepositoryUsuario() : repository;
+				return repository;
 			default:
 				throw new UndeclaredThrowableException(null, "Nenhum ambinte de execucao especificado");
 		}
