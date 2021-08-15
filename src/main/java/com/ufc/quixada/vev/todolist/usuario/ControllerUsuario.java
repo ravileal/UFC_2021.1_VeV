@@ -26,7 +26,7 @@ public class ControllerUsuario {
 	} 
 	
 	public DTOUsuario create(DTOUsuario dto) {
-		try {			
+		try {
 			rep.findByUsername(dto.getUsername());
 		} catch (NoResultException e) {
 			return rep.create(dto)? dto: null;

@@ -57,7 +57,7 @@ public class RepositoryPage implements IRepositoryPage{
 	@Override
 	public DTOPage findByName(String name){
 		if(name == null) 
-			throw new NullPointerException("username vazio");
+			throw new NullPointerException("name vazio");
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("todolist");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();

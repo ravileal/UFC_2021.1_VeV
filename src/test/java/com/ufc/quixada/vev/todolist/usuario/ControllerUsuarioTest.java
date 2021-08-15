@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.UUID;
@@ -56,12 +57,18 @@ class ControllerUsuarioTest {
 	public void shouldCreateNewUsuario() {
 		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
 		assertEquals(dto, ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
+		verify(repository).create(dto);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullId() {
 		dto.setId(null);
-		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
+		when(repository.create(dto)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
+		verify(repository).create(dto);
 	}
 	
 	@Test
@@ -72,30 +79,45 @@ class ControllerUsuarioTest {
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullName() {
 		dto.setName(null);
-		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
+		when(repository.create(dto)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
+		verify(repository).create(dto);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullUsername() {
 		dto.setUsername(null);
-		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		when(repository.findByUsername(null)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(null);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullPassword() {
 		dto.setPassword(null);
-		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
+		when(repository.create(dto)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
+		verify(repository).create(dto);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithNullIdAgenda() {
 		dto.setIdAgenda(null);
-		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		when(repository.findByUsername(dto.getUsername())).thenThrow(NoResultException.class);
+		when(repository.create(dto)).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
+		verify(repository).create(dto);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryCreateNewUsuarioWithDuplicatedUsername() {
 		assertThrows(IllegalArgumentException.class, () -> ctrl.create(dto));
+		verify(repository).findByUsername(dto.getUsername());
 	}
 	
 	/* *
@@ -108,26 +130,35 @@ class ControllerUsuarioTest {
 		dto.setUsername("the new username");
 		when(repository.findByUsername(dto.getUsername())).thenReturn(dto);
 		assertTrue(dto.equals(ctrl.signIn("the new username", "password1223")));
+		verify(repository).findByUsername(dto.getUsername());
 	}
 
 	@Test
 	public void shouldThrowWhenTryDoSignInWithNullUsername() {
+		when(repository.findByUsername(null)).thenThrow(NullPointerException.class);
 		assertThrows(NullPointerException.class, () -> ctrl.signIn(null, "password1223"));
+		verify(repository).findByUsername(null);
 	}
 	
 	@Test
 	public void shouldThrowWhenTryDoSignInWithNullPassword() {
+		when(repository.findByUsername(dto.getUsername())).thenReturn(dto);
 		assertThrows(NullPointerException.class, () -> ctrl.signIn("New Username", null));
+		verify(repository).findByUsername(dto.getUsername());
 	}
 	
 	@Test
 	public void shouldThrowWhenTryDoSignInWithUnknownUsername() {
-		assertThrows(NullPointerException.class, () -> ctrl.signIn("This is a unknown username", "password1223"));
+		when(repository.findByUsername("This is a unknown username")).thenThrow(NoResultException.class);
+		assertThrows(NoResultException.class, () -> ctrl.signIn("This is a unknown username", "password1223"));
+		verify(repository).findByUsername("This is a unknown username");
 	}
 	
 	@Test
 	public void shouldThrowWhenTryDoSignInWithWrongPassword() {
+		when(repository.findByUsername("New Username")).thenReturn(dto);
 		assertThrows(IllegalArgumentException.class, () -> ctrl.signIn("New Username", "This is a wrong password"));
+		verify(repository).findByUsername("New Username");
 	}
 	
 }
