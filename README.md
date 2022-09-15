@@ -33,3 +33,5 @@ assim como restrições impostas ao sistema.
 - [ ] [RE07] O nome de cada **página** deve ter no **mínimo** 1 caractere .
 - [ ] [RE08] O nome de cada **tarefa** deve ter no **mínimo** 1 caractere.
 - [ ] [RE09] Todas as entidades do sistema devem ser ter um 🆔 no formato UUID.
+
+
